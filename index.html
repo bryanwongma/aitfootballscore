@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-main: #040810;
+      --bg-main: #030712;
       --card-dark: #0b1325;
       --text-main: #ffffff;
       --accent-green: #22c55e;
@@ -17,7 +17,8 @@
       --accent-red: #ef4444;
       --accent-blue: #38bdf8;
       --border-soft: rgba(255, 255, 255, 0.12);
-      --upper-height-percent: 42%;
+      /* Increased default height to 54% to give the timer massive room */
+      --upper-height-percent: 54%;
     }
 
     * {
@@ -41,33 +42,36 @@
       flex-direction: column;
     }
 
+    /* Ultra-compact top navigation bar */
     .top-bar {
-      flex: 0 0 auto;
+      flex: 0 0 38px;
+      height: 38px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 4px 8px;
-      background: rgba(8, 14, 26, 0.98);
+      padding: 2px 8px;
+      background: rgba(6, 11, 22, 0.98);
       border-bottom: 1px solid var(--border-soft);
       z-index: 50;
-      gap: 6px;
+      gap: 4px;
     }
 
     .sport-select {
       background: #1e293b;
       color: #38bdf8;
       border: 1px solid rgba(56, 189, 248, 0.4);
-      padding: 5px 8px;
-      border-radius: 8px;
-      font-size: 0.85rem;
+      padding: 3px 6px;
+      border-radius: 6px;
+      font-size: 0.8rem;
       font-weight: 800;
       outline: none;
       cursor: pointer;
+      max-width: 155px;
     }
 
     .top-action-group {
       display: flex;
-      gap: 5px;
+      gap: 4px;
       align-items: center;
     }
 
@@ -75,14 +79,14 @@
       background: #1e293b;
       color: #94a3b8;
       border: 1px solid rgba(255, 255, 255, 0.12);
-      padding: 5px 8px;
-      border-radius: 8px;
-      font-size: 0.78rem;
+      padding: 3px 7px;
+      border-radius: 6px;
+      font-size: 0.74rem;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
       white-space: nowrap;
     }
 
@@ -106,51 +110,53 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      height: calc(100vh - 46px);
-      height: calc(100dvh - 46px);
+      height: calc(100vh - 38px);
+      height: calc(100dvh - 38px);
       width: 100vw;
       position: relative;
       overflow: hidden;
     }
 
+    /* Upper Section: Minimal margins to let the timer expand vertically */
     .upper-section {
       height: var(--upper-height-percent);
-      min-height: 120px;
-      max-height: 80%;
+      min-height: 110px;
+      max-height: 82%;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      padding: 2px 8px 4px 8px;
+      padding: 2px 4px 3px 4px;
       position: relative;
-      background: radial-gradient(circle at 50% 25%, #0e1e38 0%, #040810 88%);
+      background: radial-gradient(circle at 50% 35%, #0f2240 0%, #030712 90%);
       overflow: hidden;
       transition: background 0.2s ease;
     }
 
     .upper-section.extra-time-mode {
-      background: radial-gradient(circle at 50% 30%, #450a0a 0%, #0f0303 90%);
+      background: radial-gradient(circle at 50% 30%, #500808 0%, #0b0202 92%);
       animation: extra-pulse-bg 1s infinite alternate;
     }
 
     @keyframes extra-pulse-bg {
       0% { filter: brightness(1); }
-      100% { filter: brightness(1.22); }
+      100% { filter: brightness(1.25); }
     }
 
     .extra-time-banner {
       display: none;
       width: 100%;
-      background: linear-gradient(90deg, #7f1d1d, #ef4444, #7f1d1d);
+      background: linear-gradient(90deg, #991b1b, #ef4444, #991b1b);
       color: #fff;
-      font-size: 0.78rem;
+      font-size: 0.72rem;
       font-weight: 900;
       letter-spacing: 1.2px;
       text-align: center;
       padding: 2px 0;
       animation: banner-flash 0.6s infinite alternate;
       border-radius: 4px;
-      margin-bottom: 2px;
+      margin-bottom: 1px;
+      flex: 0 0 auto;
     }
 
     .upper-section.extra-time-mode .extra-time-banner {
@@ -162,25 +168,26 @@
       100% { opacity: 1; filter: drop-shadow(0 0 8px #ef4444); }
     }
 
+    /* Ultra-slim Preset Chips Bar */
     .duration-chips-container {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 5px;
+      gap: 4px;
       width: 100%;
-      padding: 1px 0;
+      padding: 1px 0 2px 0;
       flex: 0 0 auto;
     }
 
     .chip-btn {
       flex: 1;
-      max-width: 65px;
-      padding: 4px 0;
-      background: #131d33;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 6px;
+      max-width: 60px;
+      padding: 3px 0;
+      background: #111b2f;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 5px;
       color: #94a3b8;
-      font-size: 0.78rem;
+      font-size: 0.74rem;
       font-weight: 800;
       cursor: pointer;
       text-align: center;
@@ -190,10 +197,10 @@
       background: #0284c7;
       color: #ffffff;
       border-color: #38bdf8;
-      box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.45);
     }
 
-    /* Proper athletic timer container without squashed letters */
+    /* Maximized Timer Display Box: 0 paddings to reach all edges */
     .timer-display-box {
       width: 100%;
       flex: 1 1 auto;
@@ -201,53 +208,57 @@
       justify-content: center;
       align-items: center;
       padding: 0;
+      margin: 0;
       overflow: hidden;
       min-height: 0;
+      position: relative;
     }
 
     .timer-text-display {
       font-family: 'Bebas Neue', 'Oswald', -apple-system, sans-serif;
       font-weight: 400;
-      letter-spacing: 3px;
+      letter-spacing: 1px;
       color: #ffffff;
       text-align: center;
-      line-height: 0.95;
+      line-height: 0.86;
+      margin: 0;
+      padding: 0;
       font-variant-numeric: tabular-nums;
-      filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.4));
+      filter: drop-shadow(0 0 24px rgba(56, 189, 248, 0.45));
       white-space: nowrap;
-      transform-origin: center center;
       transition: color 0.2s ease;
     }
 
     .upper-section.extra-time-mode .timer-text-display {
       color: #f87171;
-      filter: drop-shadow(0 0 28px rgba(239, 68, 68, 0.9));
+      filter: drop-shadow(0 0 32px rgba(239, 68, 68, 0.95));
       animation: heartbeat-text 0.8s infinite;
     }
 
     @keyframes heartbeat-text {
       0%, 100% { transform: scale(1); }
-      20% { transform: scale(1.025); }
-      40% { transform: scale(0.995); }
-      60% { transform: scale(1.018); }
+      20% { transform: scale(1.03); }
+      40% { transform: scale(0.99); }
+      60% { transform: scale(1.02); }
     }
 
+    /* Compact Lower Bar for the Timer */
     .timer-bottom-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      gap: 8px;
+      gap: 6px;
       flex: 0 0 auto;
-      padding-top: 2px;
+      padding: 2px 2px 1px 2px;
     }
 
     .period-badge {
-      font-size: 0.78rem;
+      font-size: 0.72rem;
       font-weight: 800;
-      padding: 4px 10px;
+      padding: 3px 8px;
       border-radius: 999px;
-      background: #1e293b;
+      background: #17253d;
       color: var(--accent-blue);
       border: 1px solid rgba(56, 189, 248, 0.35);
       white-space: nowrap;
@@ -267,19 +278,19 @@
 
     .timer-controls {
       display: flex;
-      gap: 6px;
+      gap: 5px;
       flex: 1;
       justify-content: flex-end;
     }
 
     .btn-action {
-      padding: 6px 13px;
+      padding: 5px 12px;
       border: none;
-      border-radius: 8px;
-      font-size: 0.85rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
       font-weight: 800;
       cursor: pointer;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
       transition: transform 0.1s;
     }
 
@@ -292,13 +303,14 @@
     .btn-switch-half { background: #0284c7; color: #ffffff; }
     .btn-reset { background: #334155; color: #f8fafc; }
 
-    /* Interactive Draggable Splitter Divider */
+    /* Draggable Splitter Divider */
     .draggable-divider {
-      flex: 0 0 24px;
+      flex: 0 0 22px;
+      height: 22px;
       width: 100%;
-      background: #091122;
-      border-top: 1px solid rgba(255, 255, 255, 0.18);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+      background: #080f1e;
+      border-top: 1px solid rgba(255, 255, 255, 0.16);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.16);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -319,11 +331,11 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.14);
       padding: 2px 14px;
       border-radius: 999px;
       color: #94a3b8;
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       font-weight: 800;
       letter-spacing: 0.5px;
       pointer-events: none;
@@ -342,13 +354,13 @@
 
     .handle-grip-lines span {
       display: block;
-      width: 16px;
+      width: 14px;
       height: 2px;
       background: currentColor;
       border-radius: 2px;
     }
 
-    /* Sets summary for non-timed sports */
+    /* Sets summary for non-timed sports (Volleyball & Badminton) */
     .sets-summary-box {
       display: none;
       width: 100%;
@@ -360,7 +372,7 @@
     }
 
     .sets-title {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 800;
       color: #94a3b8;
       letter-spacing: 1.5px;
@@ -369,13 +381,13 @@
 
     .sets-score-huge {
       font-family: 'Bebas Neue', 'Oswald', sans-serif;
-      font-size: clamp(3.6rem, 15vw, 6.2rem);
+      font-size: clamp(4rem, 20vw, 8rem);
       font-weight: 400;
       color: #38bdf8;
       line-height: 1;
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 16px;
     }
 
     .set-pill-history {
@@ -397,7 +409,7 @@
     /* Scores Lower Section */
     .scores-section {
       flex: 1 1 auto;
-      min-height: 100px;
+      min-height: 90px;
       display: flex;
       width: 100%;
       overflow: hidden;
@@ -409,7 +421,7 @@
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      padding: 6px 4px 10px 4px;
+      padding: 4px 4px 8px 4px;
       position: relative;
       transition: background 0.3s ease, color 0.3s ease;
       overflow: hidden;
@@ -417,7 +429,7 @@
 
     .team-divider {
       width: 2px;
-      background: rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.16);
     }
 
     .team-info {
@@ -425,20 +437,20 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 3px;
+      gap: 2px;
       flex: 0 0 auto;
     }
 
     .team-name-input {
       background: rgba(0, 0, 0, 0.35);
       border: 1px solid rgba(255, 255, 255, 0.25);
-      border-radius: 8px;
+      border-radius: 6px;
       color: inherit;
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       font-weight: 800;
       text-align: center;
-      width: 92%;
-      padding: 3px;
+      width: 90%;
+      padding: 2px;
       outline: none;
     }
 
@@ -454,13 +466,13 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 4px;
-      max-width: 160px;
+      gap: 3px;
+      max-width: 150px;
     }
 
     .swatch {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       border-radius: 50%;
       border: 2px solid rgba(255, 255, 255, 0.45);
       cursor: pointer;
@@ -475,7 +487,7 @@
     .swatch.active {
       border-color: #ffffff;
       transform: scale(1.18);
-      box-shadow: 0 0 8px rgba(255,255,255,0.85);
+      box-shadow: 0 0 6px rgba(255,255,255,0.85);
     }
 
     .score-box-wrapper {
@@ -491,8 +503,8 @@
     .score-huge {
       font-family: 'Bebas Neue', 'Oswald', sans-serif;
       font-weight: 400;
-      font-size: clamp(5.5rem, 26vw, 13rem);
-      line-height: 0.9;
+      font-size: clamp(4.5rem, 24vw, 12rem);
+      line-height: 0.88;
       font-variant-numeric: tabular-nums;
       margin: 0;
       filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.55));
@@ -509,13 +521,13 @@
     }
 
     .btn-minus {
-      width: clamp(38px, 9.5vw, 46px);
-      height: clamp(38px, 9.5vw, 46px);
-      border-radius: 12px;
+      width: clamp(34px, 9vw, 44px);
+      height: clamp(34px, 9vw, 44px);
+      border-radius: 10px;
       background: rgba(0, 0, 0, 0.35);
       color: inherit;
       border: 1px solid rgba(255, 255, 255, 0.35);
-      font-size: 1.25rem;
+      font-size: 1.15rem;
       font-weight: 700;
       cursor: pointer;
       display: flex;
@@ -524,39 +536,39 @@
     }
 
     .btn-plus {
-      width: clamp(75px, 21vw, 115px);
-      height: clamp(58px, 15vw, 86px);
-      border-radius: 16px;
+      width: clamp(70px, 20vw, 110px);
+      height: clamp(52px, 14vw, 82px);
+      border-radius: 14px;
       background: rgba(255, 255, 255, 0.24);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       color: inherit;
-      border: 2px solid rgba(255, 255, 255, 0.8);
-      font-size: clamp(2rem, 8.5vw, 3.4rem);
+      border: 2px solid rgba(255, 255, 255, 0.85);
+      font-size: clamp(2rem, 8vw, 3.2rem);
       font-weight: 900;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
     }
 
     .btn-plus-two {
       display: none;
-      width: clamp(50px, 13vw, 68px);
-      height: clamp(58px, 15vw, 86px);
-      border-radius: 16px;
+      width: clamp(48px, 12vw, 66px);
+      height: clamp(52px, 14vw, 82px);
+      border-radius: 14px;
       background: rgba(255, 255, 255, 0.18);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       color: inherit;
-      border: 2px solid rgba(255, 255, 255, 0.6);
-      font-size: clamp(1.3rem, 5vw, 2rem);
+      border: 2px solid rgba(255, 255, 255, 0.65);
+      font-size: clamp(1.2rem, 4.8vw, 1.9rem);
       font-weight: 900;
       cursor: pointer;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
     }
 
     .chairball-mode .btn-plus-two {
@@ -591,14 +603,14 @@
     }
 
     .msg-title {
-      font-size: 1.5rem;
+      font-size: 1.45rem;
       font-weight: 900;
       color: #f87171;
       margin-bottom: 8px;
     }
 
     .msg-desc {
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       color: #e2e8f0;
       margin-bottom: 18px;
       line-height: 1.4;
@@ -608,9 +620,9 @@
       background: #ef4444;
       color: #fff;
       border: none;
-      padding: 10px 24px;
-      border-radius: 10px;
-      font-size: 1rem;
+      padding: 9px 22px;
+      border-radius: 8px;
+      font-size: 0.95rem;
       font-weight: 800;
       cursor: pointer;
     }
@@ -618,6 +630,7 @@
 </head>
 <body>
 
+  <!-- Slim Top Action Bar -->
   <header class="top-bar">
     <select id="sportSelector" class="sport-select" aria-label="เลือกประเภทกีฬา">
       <option value="football">⚽ Football (ฟุตบอล)</option>
@@ -628,14 +641,14 @@
 
     <div class="top-action-group">
       <button class="btn-top-util" id="swapEndsBtn" title="สลับฝั่งทีม">🔄 สลับแดน</button>
-      <button class="btn-top-util" id="soundBtn" title="เป่านกหวีด">📢 เป่านกหวีด</button>
+      <button class="btn-top-util" id="soundBtn" title="เป่านกหวีด">📢 นกหวีด</button>
       <button class="btn-top-util sound-active" id="audioToggleBtn" title="เปิด/ปิดเสียง">🔊 เสียง: เปิด</button>
       <button class="btn-top-util" id="fullscreenBtn">⛶ เต็มจอ</button>
     </div>
   </header>
 
   <div class="arena-container" id="arenaContainer">
-    <!-- Upper Section (Timer / Sets) -->
+    <!-- Upper Section: Maximized Timer Area -->
     <section class="upper-section" id="upperSection">
       <div class="extra-time-banner">🔥 EXTRA TIME! กำลังทดเวลาพิเศษ 🔥</div>
 
@@ -649,12 +662,12 @@
         <button class="chip-btn active" data-minutes="20">20m</button>
       </div>
 
-      <!-- Proportional Athletic Timer Display with Dynamic Fit -->
+      <!-- Ultra-Maximized Athletic Timer Display -->
       <div class="timer-display-box" id="timerDisplayBox">
         <div class="timer-text-display" id="timerText">20:00</div>
       </div>
 
-      <!-- Non-timed display mode (Volleyball & Badminton sets tracker) -->
+      <!-- Sets Tracker for non-timed sports (Volleyball & Badminton) -->
       <div class="sets-summary-box" id="setsSummaryBox">
         <div class="sets-title" id="setsTitle">SETS SCORE</div>
         <div class="sets-score-huge">
@@ -750,6 +763,7 @@
   </div>
 
   <script>
+    /* Audio Synthesizer Context */
     let audioCtx = null;
     let isMuted = false;
     let suspenseInterval = null;
@@ -877,6 +891,7 @@
       }
     }
 
+    /* Resizing & Text Fitting Engine */
     const arenaContainer = document.getElementById('arenaContainer');
     const upperSection = document.getElementById('upperSection');
     const draggableDivider = document.getElementById('draggableDivider');
@@ -885,23 +900,38 @@
 
     let isDraggingDivider = false;
 
+    // High-precision canvas text measurement for 4-way maximal font scaling
+    const measureCanvas = document.createElement('canvas');
+    const measureCtx = measureCanvas.getContext('2d');
+
     function fitTimerFont() {
       if (timerDisplayBox.offsetParent === null) return;
-      const boxW = timerDisplayBox.clientWidth - 16;
-      const boxH = timerDisplayBox.clientHeight - 8;
+      const boxW = timerDisplayBox.clientWidth;
+      const boxH = timerDisplayBox.clientHeight;
 
       if (boxW <= 0 || boxH <= 0) return;
 
-      // Calculate athletic proportion: ~4.5 characters for MM:SS or +MM:SS
-      const charCount = timerText.textContent.length || 5;
-      const sizeByWidth = (boxW / (charCount * 0.52));
-      const sizeByHeight = boxH * 0.95;
+      const text = timerText.textContent || "20:00";
+      
+      // Dual-constraint fitting: expand font to fill up to 96% width and 88% height
+      const targetW = boxW * 0.96;
+      const targetH = boxH * 0.88;
 
-      const optimalFontSize = Math.max(28, Math.min(sizeByWidth, sizeByHeight));
-      timerText.style.fontSize = `${optimalFontSize}px`;
+      measureCtx.font = "100px 'Bebas Neue', 'Oswald', sans-serif";
+      const measured = measureCtx.measureText(text);
+      const measuredW = measured.width || 215;
+
+      // Font size driven by width constraint
+      const sizeFromWidth = (targetW / measuredW) * 100;
+      // Font size driven by height constraint (Bebas Neue line cap is ~0.86x fontSize)
+      const sizeFromHeight = targetH / 0.86;
+
+      // Take the safe maximum without overflowing in either direction
+      const optimalSize = Math.max(36, Math.floor(Math.min(sizeFromWidth, sizeFromHeight)));
+      timerText.style.fontSize = `${optimalSize}px`;
     }
 
-    // Interactive Dragging on Touch and Mouse
+    /* Draggable Splitter Divider between 15% and 82% */
     function onPointerDown(e) {
       isDraggingDivider = true;
       draggableDivider.classList.add('dragging');
@@ -916,8 +946,7 @@
       const relativeY = clientY - containerRect.top;
 
       let pct = (relativeY / containerRect.height) * 100;
-      // Clamp between 20% and 75%
-      pct = Math.max(20, Math.min(75, pct));
+      pct = Math.max(15, Math.min(82, pct));
 
       document.documentElement.style.setProperty('--upper-height-percent', `${pct}%`);
       fitTimerFont();
@@ -940,13 +969,18 @@
     window.addEventListener('touchmove', onPointerMove, { passive: false });
     window.addEventListener('touchend', onPointerUp);
 
-    // Live resize observer for smooth font updates
     if (window.ResizeObserver) {
       const resizeObs = new ResizeObserver(() => fitTimerFont());
       resizeObs.observe(timerDisplayBox);
     }
     window.addEventListener('resize', fitTimerFont);
 
+    // Re-fit when Bebas Neue web font finishes loading
+    if (document.fonts) {
+      document.fonts.ready.then(() => fitTimerFont());
+    }
+
+    /* State Management */
     let currentSport = "football";
     let configuredMinutes = 20;
     let durationSeconds = configuredMinutes * 60;

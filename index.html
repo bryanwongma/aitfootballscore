@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Football Scoreboard 9:16 Ultra Display</title>
+  <style>
+    :root {
+      --bg-main: #06090e;
+      --card-dark: #0f172a;
+      --text-main: #ffffff;
+      --accent-green: #22c55e;
+      --accent-amber: #f59e0b;
+      --accent-red: #ef4444;
+      --accent-blue: #38bdf8;
+      --border-soft: rgba(255, 255, 255, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      height: 100vh;
+      height: 100dvh;
+      width: 100vw;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-bar {
+      flex: 0 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 12px;
+      background: rgba(10, 15, 25, 0.95);
+      border-bottom: 1px solid var(--border-soft);
+      z-index: 30;
+    }
+
+    .period-badge {
+      font-size: 0.85rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #1e293b;
+      color: var(--accent-blue);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .period-badge.extra {
+      background: #7f1d1d;
+      color: #fca5a5;
+      border-color: #ef4444;
+      animation: pulse-danger 1.2s infinite;
+    }
+
+    @keyframes pulse-danger {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.75; transform: scale(0.97); }
+    }
+
+    .util-buttons {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn-top-util {
+      background: #1e293b;
+      color: #94a3b8;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-top-util:active {
+      background: #334155;
+      color: #fff;
+    }
+
+    .timer-section {
+      flex: 0 0 38%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 4px 8px 4px;
+      position: relative;
+      background: radial-gradient(circle at 50% 25%, #13233e 0%, #06090e 82%);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+    }
+
+    /* Duration Presets Chips (1, 2, 5, 10, 20m) */
+    .duration-chips-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 96vw;
+      max-width: 520px;
+      padding-top: 2px;
+    }
+
+    .chip-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-right: 2px;
+    }
+
+    .chip-btn {
+      flex: 1;
+      padding: 4px 0;
+      background: #1e293b;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 6px;
+      color: #94a3b8;
+      font-size: 0.8rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s ease;
+    }
+
+    .chip-btn:active {
+      transform: scale(0.95);
+    }
+
+    .chip-btn.active {
+      background: #0284c7;
+      color: #ffffff;
+      border-color: #38bdf8;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+    }
+
+    /* Ultra-Wide 95vw Timer Container */
+    .timer-display-box {
+      width: 98vw;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      padding: 0;
+      margin: 0;
+    }
+
+    .timer-display {
+      font-size: clamp(5.2rem, 26vw, 12.5rem);
+      font-weight: 950;
+      font-variant-numeric: tabular-nums;
+      line-height: 0.88;
+      letter-spacing: -3px;
+      color: #ffffff;
+      text-shadow: 0 0 35px rgba(56, 189, 248, 0.45);
+      white-space: nowrap;
+      text-align: center;
+      transform: scaleY(1.05); /* Taller athletic digital look */
+    }
+
+    .timer-display.extra-time {
+      color: #f87171;
+      text-shadow: 0 0 45px rgba(239, 68, 68, 0.65);
+      animation: pulse-danger 1.5s infinite;
+    }
+
+    .timer-controls {
+      display: flex;
+      gap: 8px;
+      width: 95vw;
+      max-width: 480px;
+    }
+
+    .btn-action {
+      flex: 1;
+      padding: 9px 8px;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+      transition: transform 0.1s;
+    }
+
+    .btn-action:active {
+      transform: scale(0.95);
+    }
+
+    .btn-start { background: var(--accent-green); color: #052e16; }
+    .btn-pause { background: var(--accent-amber); color: #451a03; }
+    .btn-reset { background: #334155; color: #f8fafc; }
+
+    .scores-section {
+      flex: 1;
+      display: flex;
+      width: 100%;
+      height: 62%;
+    }
+
+    .team-card {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 6px 16px 6px;
+      transition: background 0.3s ease, color 0.3s ease;
+      position: relative;
+    }
+
+    .team-divider {
+      width: 2px;
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .team-info {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .team-name-input {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 8px;
+      color: inherit;
+      font-size: 1.25rem;
+      font-weight: 800;
+      text-align: center;
+      width: 90%;
+      padding: 4px;
+      outline: none;
+    }
+
+    .team-name-input:focus {
+      border-color: #ffffff;
+      background: rgba(0, 0, 0, 0.45);
+    }
+
+    /* Preset swatches */
+    .preset-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      width: 100%;
+    }
+
+    .color-presets {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 5px;
+      max-width: 155px;
+    }
+
+    .swatch {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.45);
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      transition: transform 0.15s, border-color 0.15s;
+    }
+
+    .swatch:active {
+      transform: scale(0.85);
+    }
+
+    .swatch.active {
+      border-color: #ffffff;
+      transform: scale(1.18);
+      box-shadow: 0 0 8px rgba(255,255,255,0.85);
+    }
+
+    /* Score Display & Giant Touch Action Buttons */
+    .score-huge {
+      font-size: clamp(6rem, 27vw, 12rem);
+      font-weight: 950;
+      line-height: 0.88;
+      font-variant-numeric: tabular-nums;
+      margin: 2px 0;
+      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.55));
+    }
+
+    .score-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .btn-minus {
+      width: clamp(42px, 11vw, 50px);
+      height: clamp(42px, 11vw, 50px);
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.35);
+      color: inherit;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      font-size: 1.4rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-plus {
+      width: clamp(80px, 22vw, 120px);
+      height: clamp(70px, 17vw, 95px);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.22);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: inherit;
+      border: 2px solid rgba(255, 255, 255, 0.75);
+      font-size: clamp(2.3rem, 9vw, 3.8rem);
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    }
+
+    .btn-plus:active, .btn-minus:active {
+      transform: scale(0.92);
+    }
+
+    /* Notification toast */
+    .toast {
+      position: absolute;
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0f172a;
+      border: 1px solid #334155;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      color: #94a3b8;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s;
+      z-index: 100;
+    }
+    .toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <header class="top-bar">
+    <div id="periodBadge" class="period-badge">ครึ่งแรก (1st Half)</div>
+    
+    <div class="util-buttons">
+      <button class="btn-top-util" id="periodBtn">สลับครึ่ง</button>
+      <button class="btn-top-util" id="fullscreenBtn">⛶ เต็มจอ</button>
+    </div>
+  </header>
+
+  <div id="toast" class="toast">หน้าจอจะไม่ดับขณะใช้งาน</div>
+
+  <section class="timer-section">
+    <!-- Preset chips: 1, 2, 5, 10, 20 Mins -->
+    <div class="duration-chips-container">
+      <span class="chip-label">เวลา:</span>
+      <button class="chip-btn" data-minutes="1">1 นาที</button>
+      <button class="chip-btn" data-minutes="2">2 นาที</button>
+      <button class="chip-btn" data-minutes="5">5 นาที</button>
+      <button class="chip-btn" data-minutes="10">10 นาที</button>
+      <button class="chip-btn active" data-minutes="20">20 นาที</button>
+    </div>
+
+    <!-- Giant horizontal clock: fills ~95% viewport width -->
+    <div class="timer-display-box">
+      <div id="timerDisplay" class="timer-display">20:00</div>
+    </div>
+
+    <!-- Timer controls -->
+    <div class="timer-controls">
+      <button id="toggleTimerBtn" class="btn-action btn-start">เริ่มนับเวลา</button>
+      <button id="resetTimerBtn" class="btn-action btn-reset">รีเซ็ต</button>
+    </div>
+  </section>
+
+  <main class="scores-section">
+    <!-- Team A -->
+    <section class="team-card" id="teamACard" style="background-color: #b91c1c; color: #ffffff;">
+      <div class="team-info">
+        <input type="text" class="team-name-input" value="ทีมเหย้า" aria-label="ชื่อทีม A">
+        <div class="preset-container">
+          <div class="color-presets" id="presetsA"></div>
+        </div>
+      </div>
+
+      <div class="score-huge" id="scoreA">0</div>
+
+      <div class="score-controls">
+        <button class="btn-minus" onclick="adjustScore('A', -1)" aria-label="ลดคะแนนทีม A">-1</button>
+        <button class="btn-plus" onclick="adjustScore('A', 1)" aria-label="เพิ่มคะแนนทีม A">+1</button>
+      </div>
+    </section>
+
+    <div class="team-divider"></div>
+
+    <!-- Team B -->
+    <section class="team-card" id="teamBCard" style="background-color: #1d4ed8; color: #ffffff;">
+      <div class="team-info">
+        <input type="text" class="team-name-input" value="ทีมเยือน" aria-label="ชื่อทีม B">
+        <div class="preset-container">
+          <div class="color-presets" id="presetsB"></div>
+        </div>
+      </div>
+
+      <div class="score-huge" id="scoreB">0</div>
+
+      <div class="score-controls">
+        <button class="btn-minus" onclick="adjustScore('B', -1)" aria-label="ลดคะแนนทีม B">-1</button>
+        <button class="btn-plus" onclick="adjustScore('B', 1)" aria-label="เพิ่มคะแนนทีม B">+1</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Configuration & State
+    let configuredMinutes = 20;
+    let durationSeconds = configuredMinutes * 60;
+    let timeLeft = durationSeconds;
+    let extraSeconds = 0;
+    let isRunning = false;
+    let isExtraTime = false;
+    let timerId = null;
+    let halfIndex = 0; // 0 = 1st Half, 1 = 2nd Half
+
+    const halfNames = ["ครึ่งแรก (1st Half)", "ครึ่งหลัง (2nd Half)"];
+    const scores = { A: 0, B: 0 };
+
+    // Jersey Color Presets
+    const colorPresets = [
+      { name: "แดง", hex: "#b91c1c", darkText: false },
+      { name: "น้ำเงิน", hex: "#1d4ed8", darkText: false },
+      { name: "เขียว", hex: "#15803d", darkText: false },
+      { name: "ขาว", hex: "#f8fafc", darkText: true },
+      { name: "ดำ", hex: "#18181b", darkText: false },
+      { name: "เหลือง", hex: "#eab308", darkText: true },
+      { name: "ส้ม", hex: "#ea580c", darkText: false },
+      { name: "ฟ้า", hex: "#0284c7", darkText: false }
+    ];
+
+    // DOM Elements
+    const timerDisplay = document.getElementById('timerDisplay');
+    const periodBadge = document.getElementById('periodBadge');
+    const toggleTimerBtn = document.getElementById('toggleTimerBtn');
+    const resetTimerBtn = document.getElementById('resetTimerBtn');
+    const periodBtn = document.getElementById('periodBtn');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const durationChips = document.querySelectorAll('.chip-btn');
+    const toast = document.getElementById('toast');
+
+    function initColorPresets(teamKey, defaultHex) {
+      const container = document.getElementById(`presets${teamKey}`);
+      container.innerHTML = "";
+
+      colorPresets.forEach(preset => {
+        const swatch = document.createElement('div');
+        swatch.className = `swatch ${preset.hex === defaultHex ? 'active' : ''}`;
+        swatch.style.backgroundColor = preset.hex;
+        swatch.title = preset.name;
+
+        swatch.addEventListener('click', () => {
+          applyTeamColor(teamKey, preset);
+          container.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+          swatch.classList.add('active');
+        });
+
+        container.appendChild(swatch);
+      });
+    }
+
+    function applyTeamColor(teamKey, preset) {
+      const card = document.getElementById(`team${teamKey}Card`);
+      card.style.backgroundColor = preset.hex;
+      card.style.color = preset.darkText ? "#0f172a" : "#ffffff";
+    }
+
+    function adjustScore(team, delta) {
+      scores[team] = Math.max(0, scores[team] + delta);
+      document.getElementById(`score${team}`).textContent = scores[team];
+    }
+
+    function formatTime(totalSec) {
+      const m = Math.floor(totalSec / 60);
+      const s = totalSec % 60;
+      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    function renderTimer() {
+      if (!isExtraTime) {
+        timerDisplay.textContent = formatTime(timeLeft);
+        timerDisplay.classList.remove('extra-time');
+        periodBadge.classList.remove('extra');
+        periodBadge.textContent = halfNames[halfIndex];
+      } else {
+        // Automatic Extra Time representation with '+'
+        timerDisplay.textContent = `+${formatTime(extraSeconds)}`;
+        timerDisplay.classList.add('extra-time');
+        periodBadge.classList.add('extra');
+        periodBadge.textContent = "ทดเวลา (Extra Time)";
+      }
+    }
+
+    function startTimer() {
+      if (isRunning) return;
+      isRunning = true;
+      toggleTimerBtn.textContent = "พักเวลา";
+      toggleTimerBtn.className = "btn-action btn-pause";
+
+      timerId = setInterval(() => {
+        if (!isExtraTime) {
+          if (timeLeft > 0) {
+            timeLeft--;
+          } else {
+            // Hit 00:00 -> transition to Extra Time
+            isExtraTime = true;
+            extraSeconds = 0;
+          }
+        } else {
+          extraSeconds++;
+        }
+        renderTimer();
+      }, 1000);
+
+      requestWakeLock();
+    }
+
+    function pauseTimer() {
+      isRunning = false;
+      clearInterval(timerId);
+      toggleTimerBtn.textContent = "เริ่มนับต่อ";
+      toggleTimerBtn.className = "btn-action btn-start";
+    }
+
+    toggleTimerBtn.addEventListener('click', () => {
+      if (isRunning) pauseTimer();
+      else startTimer();
+    });
+
+    function resetTimer() {
+      pauseTimer();
+      durationSeconds = configuredMinutes * 60;
+      timeLeft = durationSeconds;
+      extraSeconds = 0;
+      isExtraTime = false;
+      renderTimer();
+    }
+
+    resetTimerBtn.addEventListener('click', resetTimer);
+
+    periodBtn.addEventListener('click', () => {
+      pauseTimer();
+      halfIndex = (halfIndex + 1) % halfNames.length;
+      resetTimer();
+    });
+
+    durationChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        durationChips.forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        configuredMinutes = parseInt(chip.getAttribute('data-minutes'), 10);
+        resetTimer();
+        showToast(`ตั้งเวลา: ${configuredMinutes} นาที`);
+      });
+    });
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    fullscreenBtn.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+        fullscreenBtn.textContent = "⛶ ย่อจอ";
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+          fullscreenBtn.textContent = "⛶ เต็มจอ";
+        }
+      }
+    });
+
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement) {
+        fullscreenBtn.textContent = "⛶ เต็มจอ";
+      }
+    });
+
+    let wakeLock = null;
+    async function requestWakeLock() {
+      try {
+        if ('wakeLock' in navigator) {
+          wakeLock = await navigator.wakeLock.request('screen');
+        }
+      } catch (err) {}
+    }
+
+    // Initial setup
+    initColorPresets('A', '#b91c1c');
+    initColorPresets('B', '#1d4ed8');
+    renderTimer();
+  </script>
+</body>
+</html>
